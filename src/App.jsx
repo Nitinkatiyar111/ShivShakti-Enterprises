@@ -1,9 +1,13 @@
 import React from 'react'
-import Navbar from './componenta/Navbar'
+import Background from './components/Background'
+import Footer from './components/Footer'
 
 function App() {
   return (
-    <Navbar/>
+    <div>
+    <Background/>
+    <Footer/>
+    </div>
   )
 }
 
