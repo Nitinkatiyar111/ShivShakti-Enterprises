@@ -32,7 +32,6 @@
   animation: slowZoom 18s ease-in-out infinite alternate;
 }
 
-/* Fade */
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(40px); }
   to { opacity: 1; transform: translateY(0); }
