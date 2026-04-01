@@ -1,3 +1,72 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+/* 🔥 CUSTOM ANIMATIONS */
+
+/* Cursor */
+@keyframes blink {
+  0%, 50%, 100% { opacity: 1; }
+  25%, 75% { opacity: 0; }
+}
+.animate-blink {
+  animation: blink 1s infinite;
+}
+
+/* Gradient */
+@keyframes gradientMove {
+  0% { background-position: 0% }
+  50% { background-position: 100% }
+  100% { background-position: 0% }
+}
+.animate-gradient {
+  animation: gradientMove 5s ease infinite;
+}
+
+/* Background Zoom */
+@keyframes slowZoom {
+  0% { transform: scale(1.05); }
+  100% { transform: scale(1.15); }
+}
+.animate-slowZoom {
+  animation: slowZoom 18s ease-in-out infinite alternate;
+}
+
+/* Fade */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fadeUp {
+  animation: fadeUp 1s ease-out;
+}
+
+/* Floating (optional – remove if not used) */
+@keyframes float1 {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-40px); }
+}
+@keyframes float2 {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-60px); }
+}
+@keyframes float3 {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-50px); }
+}
+
+.animate-float1 { animation: float1 6s ease-in-out infinite alternate; }
+.animate-float2 { animation: float2 8s ease-in-out infinite alternate; }
+.animate-float3 { animation: float3 7s ease-in-out infinite alternate; }
+
+/* 🔥 GLOBAL FONT */
+body {
+  font-family: 'Inter', sans-serif;
+}
