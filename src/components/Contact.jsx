@@ -2,7 +2,7 @@ import background from "../assets/background.jpeg";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { useEffect } from "react";
 import QuotesForm from "./QuotesForm";
-import map from "../assets/Map.jpeg";
+import map from "../assets/map.jpeg";
 import { overlays } from "./theme";
 
 function Contact() {
