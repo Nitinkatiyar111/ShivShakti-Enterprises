@@ -28,7 +28,7 @@ function useCounter(target, duration = 1200) {
 }
 
 function Background() {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(words[0]);
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
 
@@ -42,15 +42,17 @@ function Background() {
     const currentWord = words[wordIndex];
 
     if (!isDeleting) {
-      if (text !== currentWord) {
+      if (text.length < currentWord.length) {
         timeout = setTimeout(() => {
           setText(currentWord.substring(0, text.length + 1));
         }, 70);
       } else {
-        timeout = setTimeout(() => setIsDeleting(true), 1200);
+        timeout = setTimeout(() => {
+          setIsDeleting(true);
+        }, 1200);
       }
     } else {
-      if (text !== "") {
+      if (text.length > 0) {
         timeout = setTimeout(() => {
           setText(currentWord.substring(0, text.length - 1));
         }, 35);
@@ -107,7 +109,7 @@ function Background() {
           <span className="mt-3 block">
             with{" "}
             <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-green-300 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient">
-              {text || words[0]}
+              {text}
             </span>
             <span className="ml-1 inline-block h-[1em] w-[2px] bg-green-400 align-middle animate-blink" />
           </span>
