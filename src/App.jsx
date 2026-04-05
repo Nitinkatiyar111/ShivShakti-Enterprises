@@ -1,22 +1,37 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { QuoteModalProvider } from "./context/GlobalContext";
+import GlobalModel from "./components/GlobalModel";
 
 import Navbar from "./components/Navbar";
-import Background from "./components/Background";
 import Footer from "./components/Footer";
+import Background from "./components/Background";
+import Contact from "./components/Contact";
+import About from "./components/About";
+import Projects from "./components/Project";
+import Services from "./components/Services"
 
 function App() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Background />} />
-        <Route path="/about" element={<h1 className="p-10">About</h1>} />
-        <Route path="/services" element={<h1 className="p-10">Services</h1>} />
-        <Route path="/projects" element={<h1 className="p-10">Projects</h1>} />
-        <Route path="/contact" element={<h1 className="p-10">Contact</h1>} />
-      </Routes>
-      <Footer />
-    </BrowserRouter>
+    <QuoteModalProvider>
+      <BrowserRouter>
+
+        <Navbar />
+
+        <Routes>
+          <Route path="/" element={<Background />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/about" element={<About/>}/>
+          <Route path="/services" element={<Services/>} />
+          <Route path="/projects" element={<Projects/>}/>
+        </Routes>
+
+        <Footer />
+
+        <GlobalModel />
+
+      </BrowserRouter>
+    </QuoteModalProvider>
   );
 }
+
 export default App;

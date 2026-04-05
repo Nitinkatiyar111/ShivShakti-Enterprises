@@ -3,29 +3,58 @@ import { useEffect, useState } from "react";
 
 const words = ["Clean Energy", "Green Energy", "Solar Energy"];
 
+function useCounter(target, duration = 1200) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    let start = 0;
+    const increment = target / (duration / 16);
+
+    const timer = setInterval(() => {
+      start += increment;
+
+      if (start >= target) {
+        setCount(target);
+        clearInterval(timer);
+      } else {
+        setCount(Math.floor(start));
+      }
+    }, 16);
+
+    return () => clearInterval(timer);
+  }, [target, duration]);
+
+  return count;
+}
+
 function Background() {
   const [text, setText] = useState("");
   const [wordIndex, setWordIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
-  
+
+  const installs = useCounter(150);
+  const clients = useCounter(120);
+  const years = useCounter(5);
+  const capacity = useCounter(750);
+
   useEffect(() => {
     let timeout;
     const currentWord = words[wordIndex];
 
     if (!isDeleting) {
-      timeout = setTimeout(() => {
-        setText(currentWord.substring(0, text.length + 1));
-      }, 70);
-
-      if (text === currentWord) {
+      if (text !== currentWord) {
+        timeout = setTimeout(() => {
+          setText(currentWord.substring(0, text.length + 1));
+        }, 70);
+      } else {
         timeout = setTimeout(() => setIsDeleting(true), 1200);
       }
     } else {
-      timeout = setTimeout(() => {
-        setText(currentWord.substring(0, text.length - 1));
-      }, 35);
-
-      if (text === "") {
+      if (text !== "") {
+        timeout = setTimeout(() => {
+          setText(currentWord.substring(0, text.length - 1));
+        }, 35);
+      } else {
         setIsDeleting(false);
         setWordIndex((prev) => (prev + 1) % words.length);
       }
@@ -34,12 +63,11 @@ function Background() {
     return () => clearTimeout(timeout);
   }, [text, isDeleting, wordIndex]);
 
-
   useEffect(() => {
     const glow = document.getElementById("cursor-glow");
 
     const move = (e) => {
-      if (glow) {
+      if (glow && window.innerWidth >= 768) {
         glow.style.left = e.clientX + "px";
         glow.style.top = e.clientY + "px";
       }
@@ -50,50 +78,76 @@ function Background() {
   }, []);
 
   return (
-    <div className="relative w-full h-screen overflow-hidden">
+    <section className="relative min-h-screen w-full overflow-hidden text-white">
       <div
         id="cursor-glow"
-        className="pointer-events-none fixed w-40 h-40 bg-green-400/20 rounded-full blur-3xl transform -translate-x-1/2 -translate-y-1/2 z-10"
-      ></div>
+        aria-hidden="true"
+        className="pointer-events-none fixed left-0 top-0 z-10 hidden h-40 w-40 -translate-x-1/2 -translate-y-1/2 rounded-full bg-green-400/20 blur-3xl md:block"
+      />
+
       <img
         src={background}
-        alt="background"
-        className="absolute inset-0 w-full h-full object-cover animate-slowZoom"
+        alt=""
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 h-full w-full object-cover animate-slowZoom"
       />
-      <div className="absolute inset-0 bg-black/70"></div>
-      <div className="relative z-20 flex flex-col items-center justify-center h-full text-white text-center px-6 animate-fadeUp">
-        <p className="font-body uppercase tracking-[0.4em] text-green-400 text-xs sm:text-sm mb-6">
-          • Solar • Innovation • Sustainability
-        </p>
-        <h1 className="font-heading text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-[1.2] max-w-5xl tracking-tight">
 
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-black/70"
+      />
+
+      <div className="relative z-20 flex min-h-screen flex-col items-center justify-center px-4 py-24 text-center sm:px-6">
+        <p className="mb-5 text-[10px] uppercase tracking-[0.28em] text-green-400 sm:mb-6 sm:text-xs md:text-sm md:tracking-[0.4em]">
+          Solar • Innovation • Sustainability
+        </p>
+
+        <h1 className="max-w-5xl text-3xl font-bold leading-tight tracking-tight sm:text-4xl md:text-6xl lg:text-7xl">
           <span className="block">Powering the Future</span>
-
-          <span className="block mt-3">
+          <span className="mt-3 block">
             with{" "}
-            <span className="bg-[length:200%_200%] bg-gradient-to-r from-green-400 via-emerald-500 to-green-300 bg-clip-text text-transparent animate-gradient">
-              {text}
+            <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-green-300 bg-[length:200%_200%] bg-clip-text text-transparent animate-gradient">
+              {text || words[0]}
             </span>
-            <span className="inline-block w-[2px] h-[1em] bg-green-400 ml-1 animate-blink"></span>
+            <span className="ml-1 inline-block h-[1em] w-[2px] bg-green-400 align-middle animate-blink" />
           </span>
-
         </h1>
-        <p className="mt-6 text-gray-300 max-w-2xl text-sm sm:text-base md:text-lg font-body leading-relaxed">
-          ShivShakti Enterprises delivers cutting-edge solar solutions designed
-          for efficiency, sustainability, and long-term savings.
-        </p>
-        <div className="mt-10 flex flex-col sm:flex-row gap-5">
-          <button className="font-heading relative px-8 py-3 rounded-full font-semibold bg-gradient-to-r from-green-400 to-emerald-500 text-black overflow-hidden transition duration-300 hover:scale-105 hover:shadow-[0_15px_50px_rgba(0,255,150,0.3)]">
-            Get Started
-            <span className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition"></span>
-          </button>
-          <button className="font-body px-8 py-3 rounded-full border border-white/20 text-white backdrop-blur-md hover:border-green-400 hover:bg-white/10 transition duration-300">
-            Learn More
-          </button>
-        </div>
 
+        <p className="mt-6 max-w-2xl text-sm leading-relaxed text-gray-300 sm:text-base md:text-lg">
+          ShivShakti Enterprises delivers cutting-edge solar solutions designed for efficiency, sustainability, and long-term savings.
+        </p>
+
+        <div className="mt-12 grid w-full max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-5 backdrop-blur-sm">
+            <h3 className="text-2xl font-bold text-green-400 sm:text-3xl">
+              {installs}+
+            </h3>
+            <p className="mt-1 text-sm text-gray-300">Installations</p>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-5 backdrop-blur-sm">
+            <h3 className="text-2xl font-bold text-green-400 sm:text-3xl">
+              {clients}+
+            </h3>
+            <p className="mt-1 text-sm text-gray-300">Happy Clients</p>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-5 backdrop-blur-sm">
+            <h3 className="text-2xl font-bold text-green-400 sm:text-3xl">
+              {years}+
+            </h3>
+            <p className="mt-1 text-sm text-gray-300">Years Experience</p>
+          </div>
+
+          <div className="rounded-xl border border-white/10 bg-white/5 px-4 py-5 backdrop-blur-sm">
+            <h3 className="text-2xl font-bold text-green-400 sm:text-3xl">
+              {capacity}+kW
+            </h3>
+            <p className="mt-1 text-sm text-gray-300">Capacity Installed</p>
+          </div>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
 
